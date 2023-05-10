@@ -74,7 +74,16 @@ var BoxPostForm = /** @class */ (function () {
     BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM = "box-post-form-click-hide";
     return BoxPostForm;
 }());
-var eventManager = new EventManager();
-new BoxPostForm(eventManager);
-new BoxPostList(eventManager);
+var PostsPage = /** @class */ (function () {
+    function PostsPage(eventManager) {
+        this.eventManager = eventManager;
+        this.init();
+    }
+    PostsPage.prototype.init = function () {
+        new BoxPostList(this.eventManager);
+        new BoxPostForm(this.eventManager);
+    };
+    return PostsPage;
+}());
+new PostsPage(new EventManager());
 //# sourceMappingURL=posts.js.map
