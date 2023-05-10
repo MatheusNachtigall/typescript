@@ -1,8 +1,25 @@
+class EventManager {
+  private listeners = {};
+
+  addListener(eventName, callback) {
+    if (!(this.listeners[eventName] instanceof Array)) {
+      this.listeners[eventName] = [];
+    }
+    this.listeners[eventName].push(callback);
+  }
+
+  runEvent(eventName) {
+    for (const callback of this.listeners[eventName]) {
+      callback();
+    }
+  }
+}
+
 class BoxPostList {
   static boxID = "box-post-list";
   private buttonListSelector = `#${BoxPostList.boxID}>button[type=button]`;
 
-  constructor() {
+  constructor(private eventManager: EventManager) {
     this.init();
   }
   private init() {
@@ -11,8 +28,11 @@ class BoxPostList {
     buttonList.addEventListener("click", () => {
       this.hideBox();
 
-      const boxForm = document.getElementById(BoxPostForm.boxID);
-      boxForm.removeAttribute("style");
+      this.eventManager.runEvent("show-box-post-form");
+    });
+
+    this.eventManager.addListener("show-box-post-list", () => {
+      this.showBox();
     });
   }
   hideBox() {
@@ -28,7 +48,7 @@ class BoxPostForm {
   static boxID = "box-post-form";
   private buttonFormSelector = `#${BoxPostForm.boxID}>button[type=button]`;
 
-  constructor() {
+  constructor(private eventManager: EventManager) {
     this.init();
   }
   private init() {
@@ -37,8 +57,13 @@ class BoxPostForm {
     buttonForm.addEventListener("click", () => {
       this.hideBox();
 
-      const boxList = document.getElementById(BoxPostList.boxID);
-      boxList.removeAttribute("style");
+      this.eventManager.runEvent("show-box-post-list");
+      //   const boxList = document.getElementById(BoxPostList.boxID);
+      //   boxList.removeAttribute("style");
+    });
+
+    this.eventManager.addListener("show-box-post-form", () => {
+      this.showBox();
     });
   }
   hideBox() {
@@ -51,5 +76,6 @@ class BoxPostForm {
   }
 }
 
-new BoxPostForm();
-new BoxPostList();
+const eventManager = new EventManager();
+new BoxPostForm(eventManager);
+new BoxPostList(eventManager);
