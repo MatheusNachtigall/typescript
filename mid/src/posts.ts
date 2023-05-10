@@ -1,14 +1,18 @@
-class EventManager {
-  private listeners = {};
+interface ListenerInterface {
+  (): void;
+}
 
-  addListener(eventName, callback) {
+class EventManager {
+  private listeners: { [eventName: string]: Array<ListenerInterface> } = {};
+
+  addListener(eventName: string, callback: ListenerInterface) {
     if (!(this.listeners[eventName] instanceof Array)) {
       this.listeners[eventName] = [];
     }
     this.listeners[eventName].push(callback);
   }
 
-  runEvent(eventName) {
+  runEvent(eventName: string) {
     for (const callback of this.listeners[eventName]) {
       callback();
     }
@@ -17,6 +21,7 @@ class EventManager {
 
 class BoxPostList {
   static boxID = "box-post-list";
+  static EVENT_CLICK_HIDE_BOX_LIST = "box-post-list-click-hide";
   private buttonListSelector = `#${BoxPostList.boxID}>button[type=button]`;
 
   constructor(private eventManager: EventManager) {
@@ -27,11 +32,10 @@ class BoxPostList {
 
     buttonList.addEventListener("click", () => {
       this.hideBox();
-
-      this.eventManager.runEvent("show-box-post-form");
+      this.eventManager.runEvent(BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM);
     });
 
-    this.eventManager.addListener("show-box-post-list", () => {
+    this.eventManager.addListener(BoxPostList.EVENT_CLICK_HIDE_BOX_LIST, () => {
       this.showBox();
     });
   }
@@ -46,6 +50,8 @@ class BoxPostList {
 }
 class BoxPostForm {
   static boxID = "box-post-form";
+  static EVENT_CLICK_HIDE_BOX_FORM = "box-post-form-click-hide";
+
   private buttonFormSelector = `#${BoxPostForm.boxID}>button[type=button]`;
 
   constructor(private eventManager: EventManager) {
@@ -56,13 +62,10 @@ class BoxPostForm {
 
     buttonForm.addEventListener("click", () => {
       this.hideBox();
-
-      this.eventManager.runEvent("show-box-post-list");
-      //   const boxList = document.getElementById(BoxPostList.boxID);
-      //   boxList.removeAttribute("style");
+      this.eventManager.runEvent(BoxPostList.EVENT_CLICK_HIDE_BOX_LIST);
     });
 
-    this.eventManager.addListener("show-box-post-form", () => {
+    this.eventManager.addListener(BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM, () => {
       this.showBox();
     });
   }

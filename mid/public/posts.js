@@ -27,9 +27,9 @@ var BoxPostList = /** @class */ (function () {
         var buttonList = document.querySelector(this.buttonListSelector);
         buttonList.addEventListener("click", function () {
             _this.hideBox();
-            _this.eventManager.runEvent("show-box-post-form");
+            _this.eventManager.runEvent(BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM);
         });
-        this.eventManager.addListener("show-box-post-list", function () {
+        this.eventManager.addListener(BoxPostList.EVENT_CLICK_HIDE_BOX_LIST, function () {
             _this.showBox();
         });
     };
@@ -42,6 +42,7 @@ var BoxPostList = /** @class */ (function () {
         boxList.removeAttribute("style");
     };
     BoxPostList.boxID = "box-post-list";
+    BoxPostList.EVENT_CLICK_HIDE_BOX_LIST = "box-post-list-click-hide";
     return BoxPostList;
 }());
 var BoxPostForm = /** @class */ (function () {
@@ -55,11 +56,9 @@ var BoxPostForm = /** @class */ (function () {
         var buttonForm = document.querySelector(this.buttonFormSelector);
         buttonForm.addEventListener("click", function () {
             _this.hideBox();
-            _this.eventManager.runEvent("show-box-post-list");
-            //   const boxList = document.getElementById(BoxPostList.boxID);
-            //   boxList.removeAttribute("style");
+            _this.eventManager.runEvent(BoxPostList.EVENT_CLICK_HIDE_BOX_LIST);
         });
-        this.eventManager.addListener("show-box-post-form", function () {
+        this.eventManager.addListener(BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM, function () {
             _this.showBox();
         });
     };
@@ -72,6 +71,7 @@ var BoxPostForm = /** @class */ (function () {
         boxList.removeAttribute("style");
     };
     BoxPostForm.boxID = "box-post-form";
+    BoxPostForm.EVENT_CLICK_HIDE_BOX_FORM = "box-post-form-click-hide";
     return BoxPostForm;
 }());
 var eventManager = new EventManager();
