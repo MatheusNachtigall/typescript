@@ -1,5 +1,3 @@
-import { PostHttp } from "http/post-http";
-import "./module1";
+// import PostListPage from "page/post-list-page";
 
-let postHttpClass: PostHttp = new PostHttp();
-postHttpClass.query();
+// let postListPage = new PostListPage();
