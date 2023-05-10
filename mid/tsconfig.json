@@ -6,7 +6,5 @@
     "outDir": "public",
     "sourceMap": true
   },
-  "files": [
-    "src/posts.ts"
-  ]
+  "files": ["src/posts.ts"]
 }
