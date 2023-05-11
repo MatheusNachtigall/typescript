@@ -1,9 +1,9 @@
 requirejs.config({
-  baseUrl: "./js",
+  baseUrl: "/js",
   paths: {
-    test: "test",
     "page/post-list-page": "page/post-list-page",
+    "page/post-new-page": "page/post-new-page",
   },
 });
 
-requirejs(["test", "page/post-list-page"], function () {});
+requirejs([MODULE_INITIALIZER], function () {});

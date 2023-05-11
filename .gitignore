@@ -1,5 +1,3 @@
 mid/public/*.map
-avancado/public/js/*.map
-avancado/public/*/*.map
-avancado/public/*/*/*.map
+avancado/public/**/*.map
 avancado/node_modules

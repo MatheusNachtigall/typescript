@@ -19,7 +19,14 @@ define(["require", "exports", "./response"], function (require, exports, respons
                 xhttp.send();
             });
         };
-        Http.prototype.post = function (url) { };
+        Http.prototype.post = function (url, data) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                var xhttp = _this.createXHttpRequest(HttpVerbs.POST, url);
+                _this.configureCallback(xhttp, resolve, reject);
+                xhttp.send(JSON.stringify(data));
+            });
+        };
         Http.prototype.createXHttpRequest = function (method, url) {
             var xhttp = new XMLHttpRequest();
             xhttp.open(method, url, true);
@@ -29,11 +36,16 @@ define(["require", "exports", "./response"], function (require, exports, respons
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4) {
                     var response = new response_1.default(this.responseText, this.status);
-                    if (this.status === 200) {
+                    if (this.status.toString().startsWith("20")) {
                         resolve(response);
                     }
-                    //Erro
-                    reject(this.responseText);
+                    else {
+                        if (this.status.toString().startsWith("40") ||
+                            this.status.toString().startsWith("50")) {
+                            //Erro
+                            reject(this.responseText);
+                        }
+                    }
                 }
             };
         };

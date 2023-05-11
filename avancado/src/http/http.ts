@@ -16,7 +16,13 @@ export class Http {
     });
   }
 
-  post(url: string) {}
+  post(url: string, data: object) {
+    return new Promise((resolve, reject) => {
+      let xhttp: XMLHttpRequest = this.createXHttpRequest(HttpVerbs.POST, url);
+      this.configureCallback(xhttp, resolve, reject);
+      xhttp.send(JSON.stringify(data));
+    });
+  }
 
   createXHttpRequest(method: HttpVerbs, url: string) {
     let xhttp = new XMLHttpRequest();
@@ -28,11 +34,17 @@ export class Http {
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4) {
         const response = new Response(this.responseText, this.status);
-        if (this.status === 200) {
+        if (this.status.toString().startsWith("20")) {
           resolve(response);
+        } else {
+          if (
+            this.status.toString().startsWith("40") ||
+            this.status.toString().startsWith("50")
+          ) {
+            //Erro
+            reject(this.responseText);
+          }
         }
-        //Erro
-        reject(this.responseText);
       }
     };
   }
